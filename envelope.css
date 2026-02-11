@@ -1,0 +1,286 @@
+/* Envelope Overlay */
+#envelope-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Context emphasis: Vignette background */
+    background: radial-gradient(circle at center, #444 0%, #111 100%);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 1s ease-out, visibility 1s 1s;
+    perspective: 1000px;
+}
+
+#envelope-overlay.hidden {
+    background: transparent;
+    pointer-events: none;
+}
+
+/* Container for the envelope */
+.envelope-wrapper {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.1s ease-out;
+    transform-style: preserve-3d;
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Base Envelope Shape - VINTAGE CREAM TEXTURE */
+.envelope {
+    position: relative;
+    width: 340px;
+    height: 240px;
+
+    /* Vintage Paper Texture simulation */
+    background-color: #fdfbf7;
+    background-image:
+        radial-gradient(#d3cbb8 1px, transparent 1px),
+        repeating-linear-gradient(45deg, rgba(211, 203, 184, 0.1) 0px, rgba(211, 203, 184, 0.1) 1px, transparent 1px, transparent 10px);
+    background-size: 20px 20px, 100% 100%;
+
+    border-radius: 5px;
+    box-shadow:
+        0 0 5px rgba(0, 0, 0, 0.1),
+        0 20px 40px rgba(0, 0, 0, 0.3);
+    transform-style: preserve-3d;
+}
+
+/* The back of the envelope inside */
+.envelope::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #e0d8c3;
+    /* Darker cream inside */
+    border-radius: 5px 5px 0 0;
+    z-index: 0;
+}
+
+/* The Front Flaps */
+.front {
+    position: absolute;
+    width: 0;
+    height: 0;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Top Flap (The one that opens) */
+.flap {
+    border-left: 170px solid transparent;
+    border-right: 170px solid transparent;
+    border-top: 130px solid #fdfbf7;
+    /* Matching Vintage Cream */
+
+    top: 0;
+    left: 0;
+    transform-origin: top;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s;
+    z-index: 5;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+}
+
+/* Add texture to flap using pseudo-element */
+.flap::after {
+    content: '';
+    position: absolute;
+    top: -130px;
+    /* Offset to match flap shape roughly */
+    left: -170px;
+    width: 340px;
+    height: 130px;
+    background-image:
+        radial-gradient(rgba(211, 203, 184, 0.2) 1px, transparent 1px);
+    background-size: 15px 15px;
+    pointer-events: none;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+/* Bottom Pocket */
+.pocket {
+    border-left: 170px solid #f2efe9;
+    /* Slightly darker cream for side definitions */
+    border-right: 170px solid #f2efe9;
+    border-bottom: 120px solid #fdfbf7;
+    /* Main vintage cream */
+    top: 0;
+    left: 0;
+    z-index: 4;
+    border-radius: 0 0 5px 5px;
+    filter: drop-shadow(0 -1px 3px rgba(0, 0, 0, 0.05));
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+/* Add texture to pocket */
+.pocket::before {
+    content: '';
+    position: absolute;
+    bottom: -120px;
+    left: -170px;
+    width: 340px;
+    height: 120px;
+    background-image:
+        radial-gradient(rgba(211, 203, 184, 0.2) 1px, transparent 1px);
+    background-size: 15px 15px;
+    pointer-events: none;
+    z-index: 5;
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    /* This clip path needs adjustment for pocket shape usually */
+}
+
+/* Pocket Text */
+.pocket::after {
+    content: 'To My Love';
+    position: absolute;
+    bottom: 20px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem;
+    color: #8c7b75;
+    /* Vintage ink color */
+    z-index: 6;
+    pointer-events: none;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* The Letter Inside - LINEN TEXTURE */
+.letter {
+    position: absolute;
+    top: 50px;
+    /* Pushed down to be hidden */
+    left: 20px;
+    width: 300px;
+    height: 180px;
+    background-color: #fff;
+
+    /* Linen Texture Simulation */
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 3px, #f0f0f0 4px, transparent 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, #f0f0f0 4px, transparent 4px);
+
+    border-radius: 2px;
+    z-index: 2;
+    /* Behind pocket */
+    transition: transform 0.8s 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.letter .text {
+    font-family: 'Dancing Script', cursive;
+    color: #c0392b;
+    font-size: 2rem;
+    padding: 20px;
+}
+
+/* Wax Seal - RED REALISTIC */
+.heart-seal {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45px;
+    height: 45px;
+
+    /* Wax Texture */
+    background: radial-gradient(circle at 35% 35%, #ff7675, #c0392b 60%, #a93226 100%);
+    box-shadow:
+        inset 0 0 5px rgba(255, 255, 255, 0.3),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.2),
+        0 3px 6px rgba(0, 0, 0, 0.4);
+
+    border-radius: 50%;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.4s 0.4s;
+    border: 2px solid #922b21;
+    /* Dark wax rim */
+}
+
+.heart-seal::before {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    border: 1px dashed rgba(169, 50, 38, 0.5);
+    /* Emulate emblem edge */
+}
+
+.heart-seal:hover {
+    transform: translateX(-50%) scale(1.1);
+}
+
+/* --- ANIMATION STATES --- */
+
+/* 1. Open Flap */
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+    transition-delay: 0s;
+}
+
+/* 2. Slide Letter Up */
+.envelope-wrapper.open .letter {
+    transform: translateY(-150px);
+    /* Move up significantly to show */
+    z-index: 6;
+    /* Bring to front */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* 3. Hide Seal */
+.envelope-wrapper.open .heart-seal {
+    opacity: 0;
+    pointer-events: none;
+    transition-delay: 0s;
+}
+
+/* 4. Disable Interaction */
+.envelope-wrapper.open {
+    cursor: default;
+}
+
+/* 5. Move Envelope Up (The "Stay at top" effect) */
+#envelope-overlay.hidden .envelope-wrapper {
+    transform: translateY(-120vh) scale(0.8) !important;
+    transition: transform 1.2s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    opacity: 0;
+}
+
+#envelope-overlay.hidden {
+    pointer-events: none;
+}
+
+/* Mouse Hover Float */
+.envelope-wrapper {
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}

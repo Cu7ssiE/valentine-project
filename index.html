@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Journey ❤️</title>
+    <!-- Fonts: Playfair Display (Headers) & Lato (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="envelope.css">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body class="page-fade-in">
+
+    <!-- Background Animation Container -->
+    <div class="hearts-bg"></div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>สุขสันต์วันวาเลนไทน์</h1>
+            <p class="subtitle">แด่...คนพิเศษของเค้า ❤️</p>
+        </div>
+        <div class="scroll-down" onclick="document.querySelector('.timeline').scrollIntoView({behavior: 'smooth'})">
+            <span>ดูเรื่องราวของเรา</span>
+            <div class="arrow">👇</div>
+        </div>
+    </div>
+
+    <!-- Timeline Section -->
+    <div class="timeline">
+        <h2 class="section-title">การเดินทางของเรา</h2>
+
+        <!-- Item 1 -->
+        <div class="timeline-item left">
+            <div class="glass-card timeline-content">
+                <span class="date-badge">14 ก.พ. 2023</span>
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1517867065872-c70f385eecc8?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="First Date">
+                </div>
+                <h3>เดทแรกของเรา 💖</h3>
+                <p>จำวันแรกที่เราเจอกันได้ไหม? วันนั้นเค้าเขินมากเลยนะ แต่ก็มีความสุขที่สุดเลย 😳</p>
+            </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="timeline-item right">
+            <div class="glass-card timeline-content">
+                <span class="date-badge">25 ธ.ค. 2023</span>
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Trip">
+                </div>
+                <h3>ทริปแรกด้วยกัน ✈️</h3>
+                <p>ไปเที่ยวด้วยกันครั้งแรก สนุกมากเลยนะ ถึงจะหลงทางบ้างแต่ก็ตลกดี 555</p>
+            </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="timeline-item left">
+            <div class="glass-card timeline-content">
+                <span class="date-badge">วันนี้</span>
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Today">
+                </div>
+                <h3>เธอคือทุกอย่างของเค้า</h3>
+                <p>ขอบคุณที่อยู่ข้างๆ กันนะ จะรักและดูแลแบบนี้ตลอดไปเลย</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Surprise Section -->
+    <div class="surprise-section">
+        <div class="glass-card surprise-card">
+            <h2>เป็นวาเลนไทน์ของเค้านะ? 🌹</h2>
+            <p>เค้ามีคำถามจะถาม...</p>
+
+            <div class="buttons-container">
+                <button class="btn-love" id="btn-yes" onclick="showLove()">ตกลง! 💖</button>
+                <button class="btn-no" id="btn-no" onmouseover="runAway(this)">ไม่เอา 😢</button>
+            </div>
+
+            <div id="secretMsg" class="hidden-msg">
+                <h2>เย้! รักตะเองที่สุดเลยยย! 💖</h2>
+                <p>(ขอบคุณที่เป็นวาเลนไทน์ของเค้านะครับ 🥰)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
