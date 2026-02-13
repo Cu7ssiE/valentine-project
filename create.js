@@ -84,7 +84,8 @@ function generateLink() {
     const jsonString = JSON.stringify(data);
     const compressed = LZString.compressToEncodedURIComponent(jsonString);
 
-    const finalUrl = `${baseUrl}?data=${compressed}`;
+    // Use Hash (#) instead of Query (?) to bypass Server URI limits
+    const finalUrl = `${baseUrl}#data=${compressed}`;
 
     // Show Result
     const linkInput = document.getElementById('share-link');
@@ -200,8 +201,8 @@ function setupImageUploads() {
                 let width = img.width;
                 let height = img.height;
 
-                // Max dimensions (keep it small for URL safety)
-                const MAX_SIZE = 500;
+                // Optimized dimensions for URL safety (smaller)
+                const MAX_SIZE = 300;
 
                 if (width > height) {
                     if (width > MAX_SIZE) {
@@ -220,8 +221,8 @@ function setupImageUploads() {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // Compress to JPEG with 0.7 quality
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                // Compress to JPEG with 0.6 quality (more aggressive)
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
                 callback(dataUrl);
             };
             img.src = e.target.result;

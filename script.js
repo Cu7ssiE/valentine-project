@@ -261,12 +261,23 @@ function checkUrlParams() {
     const p = new URLSearchParams(window.location.search);
     let data = {};
 
-    // Decompress if 'data' param exists
-    if (p.get('data')) {
+    // Decompress if 'data' param exists (check Hash first, then Query)
+    let compressedData = null;
+
+    // Check Hash (#data=...)
+    if (window.location.hash && window.location.hash.includes('data=')) {
+        compressedData = window.location.hash.split('data=')[1];
+    }
+    // Fallback to Query (?data=...)
+    else if (p.get('data')) {
+        compressedData = p.get('data');
+    }
+
+    if (compressedData) {
         try {
             // Check if LZString is available (it should be)
             if (typeof LZString !== 'undefined') {
-                const decompressed = LZString.decompressFromEncodedURIComponent(p.get('data'));
+                const decompressed = LZString.decompressFromEncodedURIComponent(compressedData);
                 if (decompressed) data = JSON.parse(decompressed);
             }
         } catch (e) {
