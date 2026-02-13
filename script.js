@@ -64,7 +64,6 @@ function acceptLove() {
 }
 
 // "No" Button Evasion Logic
-// "No" Button Logic
 function handleNoClick() {
     const btnNo = document.getElementById('btn-no');
     const btnYes = document.querySelector('.btn-yes');
@@ -169,7 +168,6 @@ document.addEventListener('mouseleave', () => {
 });
 
 // Open & Transition Logic
-// Open & Transition Logic
 let step = 0; // 0: Closed, 1: Seal Removed, 2: Open, 3: Transitioning
 
 window.openEnvelope = function () {
@@ -238,3 +236,171 @@ if (history.scrollRestoration) {
     history.scrollRestoration = 'manual';
 }
 window.scrollTo(0, 0);
+
+// --- Creator Mode Logic (Expanded) ---
+
+// 0. Tab Switching
+function switchTab(tabId) {
+    // Hide all contents
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    // Deactivate all buttons
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+    // Activate selected
+    document.getElementById(tabId).classList.add('active');
+
+    // Find button that triggered this
+    const btns = document.querySelectorAll('.tab-btn');
+    if (tabId === 'tab-hero' && btns[0]) btns[0].classList.add('active');
+    if (tabId === 'tab-timeline' && btns[1]) btns[1].classList.add('active');
+    if (tabId === 'tab-letter' && btns[2]) btns[2].classList.add('active');
+}
+
+// 1. Check URL Params on Load (Full Version)
+function checkUrlParams() {
+    const p = new URLSearchParams(window.location.search);
+
+    // Helper to set text
+    const setText = (id, key) => {
+        const el = document.getElementById(id);
+        if (el && p.get(key)) el.innerText = p.get(key);
+    };
+    // Helper to set image src
+    const setImg = (id, key) => {
+        const el = document.getElementById(id);
+        if (el && p.get(key)) el.src = p.get(key);
+    };
+    // Helper for HTML (newlines)
+    const setHtml = (id, key) => {
+        const el = document.getElementById(id);
+        if (el && p.get(key)) el.innerHTML = p.get(key).replace(/\n/g, '<br>');
+    };
+
+    // Hero
+    setText('hero-title', 'hT');
+    setText('hero-subtitle', 'hS');
+
+    // Timeline 1
+    setText('t1-date', 't1d');
+    setImg('t1-img', 't1i');
+    setText('t1-title', 't1t');
+    setText('t1-desc', 't1desc');
+
+    // Timeline 2
+    setText('t2-date', 't2d');
+    setImg('t2-img', 't2i');
+    setText('t2-title', 't2t');
+    setText('t2-desc', 't2desc');
+
+    // Timeline 3
+    setText('t3-date', 't3d');
+    setImg('t3-img', 't3i');
+    setText('t3-title', 't3t');
+    setText('t3-desc', 't3desc');
+
+    // Letter
+    if (p.get('to')) {
+        const header = document.getElementById('letter-header');
+        if (header) header.innerText = `ถึง... ${p.get('to')} 💖`;
+
+        const instr = document.querySelector('.instruction');
+        if (instr) instr.innerText = `มีข้อความถึงคุณ ${p.get('to')} 💌`;
+    }
+
+    setHtml('letter-body', 'msg');
+
+    // Surprise
+    setImg('surprise-img', 'sImg');
+    setText('surprise-text', 'sText');
+    setText('btn-yes', 'sYes');
+    setText('btn-no', 'sNo');
+
+    // Success
+    setImg('success-img', 'sucImg');
+    setText('success-title', 'sucTitle');
+    setText('success-text', 'sucText');
+
+    // Check for 'hide' param
+    if (p.get('hide') === '1') {
+        const createBtn = document.querySelector('.floating-create-btn');
+        if (createBtn) createBtn.style.display = 'none';
+    }
+}
+
+// Run on load
+checkUrlParams();
+
+// 2. Go to Create Page (with params)
+function goToCreatePage() {
+    // Preserve current query params to pre-fill the form
+    window.location.href = 'create.html' + window.location.search;
+}
+
+// 3. Generate Link (Full Version)
+function generateLink() {
+    const baseUrl = window.location.origin + window.location.pathname;
+    const p = new URLSearchParams();
+
+    // Helper to get value
+    const getVal = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+    };
+    const add = (key, val) => { if (val) p.set(key, val); };
+
+    // Hero
+    add('hT', getVal('in-hero-h1'));
+    add('hS', getVal('in-hero-sub'));
+
+    // Timeline 1
+    add('t1d', getVal('in-t1-date'));
+    add('t1i', getVal('in-t1-img'));
+    add('t1t', getVal('in-t1-title'));
+    add('t1desc', getVal('in-t1-desc'));
+
+    // Timeline 2
+    add('t2d', getVal('in-t2-date'));
+    add('t2i', getVal('in-t2-img'));
+    add('t2t', getVal('in-t2-title'));
+    add('t2desc', getVal('in-t2-desc'));
+
+    // Timeline 3
+    add('t3d', getVal('in-t3-date'));
+    add('t3i', getVal('in-t3-img'));
+    add('t3t', getVal('in-t3-title'));
+    add('t3desc', getVal('in-t3-desc'));
+
+    // Letter
+    add('to', getVal('in-letter-to'));
+    add('msg', getVal('in-letter-msg'));
+
+    if (Array.from(p).length === 0) {
+        alert("ยังไม่ได้แก้ไขอะไรเลยนะ! 😅");
+        return;
+    }
+
+    const finalUrl = `${baseUrl}?${p.toString()}`;
+
+    // Show Result
+    const linkInput = document.getElementById('share-link');
+    if (linkInput) linkInput.value = finalUrl;
+
+    const resultArea = document.getElementById('result-area');
+    if (resultArea) resultArea.classList.remove('hidden');
+}
+
+// 4. Copy Link
+function copyLink() {
+    const linkInput = document.getElementById('share-link');
+    if (!linkInput) return;
+
+    linkInput.select();
+    linkInput.setSelectionRange(0, 99999); // For mobile
+
+    navigator.clipboard.writeText(linkInput.value).then(() => {
+        alert("คัดลอกลิงก์แล้ว! ส่งให้เขาได้เลย 📨");
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+        alert("คัดลอกไม่ติด ลองกดคัดลอกเองนะ 😅");
+    });
+}

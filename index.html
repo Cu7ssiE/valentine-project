@@ -32,8 +32,8 @@
                     <div class="back"></div>
                     <div class="letter">
                         <div class="letter-content">
-                            <h3>ถึง...คนโปรดของเค้า 💖</h3>
-                            <p>
+                            <h3 id="letter-header">ถึง...คนโปรดของเค้า 💖</h3>
+                            <p id="letter-body">
                                 ขอบคุณที่เข้ามาเป็นความสดใส<br>
                                 ในทุกๆ วันของเค้านะคะ<br>
                                 <br>
@@ -62,8 +62,8 @@
     <!-- Hero Section -->
     <div class="hero">
         <div class="hero-content">
-            <h1>สุขสันต์วันวาเลนไทน์</h1>
-            <p class="subtitle">แด่...คนพิเศษของเค้า ❤️</p>
+            <h1 id="hero-title">สุขสันต์วันวาเลนไทน์</h1>
+            <p class="subtitle" id="hero-subtitle">แด่...คนพิเศษของเค้า ❤️</p>
         </div>
         <div class="scroll-down" onclick="document.querySelector('.timeline').scrollIntoView({behavior: 'smooth'})">
             <span>ดูเรื่องราวของเรา</span>
@@ -78,39 +78,42 @@
         <!-- Item 1 -->
         <div class="timeline-item left">
             <div class="glass-card timeline-content">
-                <span class="date-badge">14 ก.พ. 2023</span>
+                <span class="date-badge" id="t1-date">14 ก.พ. 2023</span>
                 <div class="img-container">
-                    <img src="https://www.phoenixmag.com/wp-content/uploads/2019/08/AdobeStock_167368849-1280x853.jpeg"
+                    <img id="t1-img"
+                        src="https://www.phoenixmag.com/wp-content/uploads/2019/08/AdobeStock_167368849-1280x853.jpeg"
                         alt="First Date">
                 </div>
-                <h3>เดทแรกของเรา 💖</h3>
-                <p>จำวันแรกที่เราเจอกันได้ไหม? วันนั้นเค้าเขินมากเลยนะ แต่ก็มีความสุขที่สุดเลย 😳</p>
+                <h3 id="t1-title">เดทแรกของเรา 💖</h3>
+                <p id="t1-desc">จำวันแรกที่เราเจอกันได้ไหม? วันนั้นเค้าเขินมากเลยนะ แต่ก็มีความสุขที่สุดเลย 😳</p>
             </div>
         </div>
 
         <!-- Item 2 -->
         <div class="timeline-item right">
             <div class="glass-card timeline-content">
-                <span class="date-badge">25 ธ.ค. 2023</span>
+                <span class="date-badge" id="t2-date">25 ธ.ค. 2023</span>
                 <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=400&h=300"
+                    <img id="t2-img"
+                        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=400&h=300"
                         alt="Trip">
                 </div>
-                <h3>ทริปแรกด้วยกัน ✈️</h3>
-                <p>ไปเที่ยวด้วยกันครั้งแรก สนุกมากเลยนะ ถึงจะหลงทางบ้างแต่ก็ตลกดี 555</p>
+                <h3 id="t2-title">ทริปแรกด้วยกัน ✈️</h3>
+                <p id="t2-desc">ไปเที่ยวด้วยกันครั้งแรก สนุกมากเลยนะ ถึงจะหลงทางบ้างแต่ก็ตลกดี 555</p>
             </div>
         </div>
 
         <!-- Item 3 -->
         <div class="timeline-item left">
             <div class="glass-card timeline-content">
-                <span class="date-badge">วันนี้</span>
+                <span class="date-badge" id="t3-date">วันนี้</span>
                 <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=400&h=300"
+                    <img id="t3-img"
+                        src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=400&h=300"
                         alt="Today">
                 </div>
-                <h3>เธอคือทุกอย่างของเค้า</h3>
-                <p>ขอบคุณที่อยู่ข้างๆ กันนะ จะรักและดูแลแบบนี้ตลอดไปเลย</p>
+                <h3 id="t3-title">เธอคือทุกอย่างของเค้า</h3>
+                <p id="t3-desc">ขอบคุณที่อยู่ข้างๆ กันนะ จะรักและดูแลแบบนี้ตลอดไปเลย</p>
             </div>
         </div>
 
@@ -135,10 +138,11 @@
             <div class="surprise-content hidden" id="surprise-content">
                 <div class="cute-character">
                     <!-- Milk & Mocha Bear GIF -->
-                    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExanY4ZDMwejk3MWN5NGNtcmtxczZtd3ZrOWVzdnowbjQ5cGVjdnBtNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kZqbBT64ECtjy/giphy.gif"
+                    <img id="surprise-img"
+                        src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExanY4ZDMwejk3MWN5NGNtcmtxczZtd3ZrOWVzdnowbjQ5cGVjdnBtNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kZqbBT64ECtjy/giphy.gif"
                         alt="Cute Bear">
                 </div>
-                <h2>เป็นวาเลนไทน์ของเค้านะ? 🥺</h2>
+                <h2 id="surprise-text">เป็นวาเลนไทน์ของเค้านะ? 🥺</h2>
                 <div class="action-buttons">
                     <!-- Added btn-yes class for JS selection -->
                     <button class="btn-love btn-yes" id="btn-yes" onclick="acceptLove()">ตกลง! 💖</button>
@@ -150,10 +154,102 @@
             <!-- 3. Success Message (Hidden) -->
             <div class="success-message hidden" id="success-msg">
                 <!-- Mochi Cat GIF -->
-                <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDRyN3V5eWd3OXpycnU1MjFyajU0c2pxbW10b3FkNHhqcW43ZmFwayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4asRlBKdJaPeBahjcL/giphy.gif"
+                <img id="success-img"
+                    src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDRyN3V5eWd3OXpycnU1MjFyajU0c2pxbW10b3FkNHhqcW43ZmFwayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4asRlBKdJaPeBahjcL/giphy.gif"
                     alt="Happy Cat">
-                <h2>เย้! รักตะเองที่สุดเลย! ❤️</h2>
-                <p>อยู่ด้วยกันไปนานๆ นะคะ 🥰</p>
+                <h2 id="success-title">เย้! รักตะเองที่สุดเลย! ❤️</h2>
+                <p id="success-text">อยู่ด้วยกันไปนานๆ นะคะ 🥰</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Creator Trigger Button -->
+    <button id="create-btn" class="floating-create-btn" onclick="goToCreatePage()">
+        ✍️ เขียนการ์ดเอง
+    </button>
+
+    <!-- Creator Modal (Tabbed) -->
+    <div id="creator-modal" class="creator-modal hidden">
+        <div class="modal-content glass-card">
+            <span class="close-modal" onclick="toggleCreatorModal()">&times;</span>
+            <h2>ออกแบบเว็บไซต์ของคุณ 🛠️</h2>
+
+            <!-- Tabs Navigation -->
+            <div class="modal-tabs">
+                <button class="tab-btn active" onclick="switchTab('tab-hero')">หน้าแรก</button>
+                <button class="tab-btn" onclick="switchTab('tab-timeline')">เรื่องราว</button>
+                <button class="tab-btn" onclick="switchTab('tab-letter')">จดหมาย</button>
+            </div>
+
+            <div class="modal-body-scroll">
+                <!-- Tab 1: Hero -->
+                <div id="tab-hero" class="tab-content active">
+                    <div class="form-group">
+                        <label>หัวข้อใหญ่ (Title):</label>
+                        <input type="text" id="in-hero-h1" placeholder="สุขสันต์วันวาเลนไทน์">
+                    </div>
+                    <div class="form-group">
+                        <label>คำโปรย (Subtitle):</label>
+                        <input type="text" id="in-hero-sub" placeholder="แด่...คนพิเศษของเค้า ❤️">
+                    </div>
+                </div>
+
+                <!-- Tab 2: Timeline -->
+                <div id="tab-timeline" class="tab-content">
+                    <h4>เหตุการณ์ที่ 1</h4>
+                    <div class="form-group">
+                        <label>วันที่:</label>
+                        <input type="text" id="in-t1-date" placeholder="14 ก.พ. 2023">
+                    </div>
+                    <div class="form-group">
+                        <label>รูปภาพ (Link/URL):</label>
+                        <input type="text" id="in-t1-img" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>หัวข้อ:</label>
+                        <input type="text" id="in-t1-title" placeholder="เดทแรกของเรา 💖">
+                    </div>
+                    <div class="form-group">
+                        <label>คำบรรยาย:</label>
+                        <textarea id="in-t1-desc" rows="2"></textarea>
+                    </div>
+                    <hr>
+                    <h4>เหตุการณ์ที่ 2</h4>
+                    <div class="form-group"><input type="text" id="in-t2-date" placeholder="วันที่..."></div>
+                    <div class="form-group"><input type="text" id="in-t2-img" placeholder="ลิงก์รูปภาพ..."></div>
+                    <div class="form-group"><input type="text" id="in-t2-title" placeholder="หัวข้อ..."></div>
+                    <div class="form-group"><textarea id="in-t2-desc" rows="2"></textarea></div>
+                    <hr>
+                    <h4>เหตุการณ์ที่ 3</h4>
+                    <div class="form-group"><input type="text" id="in-t3-date" placeholder="วันที่..."></div>
+                    <div class="form-group"><input type="text" id="in-t3-img" placeholder="ลิงก์รูปภาพ..."></div>
+                    <div class="form-group"><input type="text" id="in-t3-title" placeholder="หัวข้อ..."></div>
+                    <div class="form-group"><textarea id="in-t3-desc" rows="2"></textarea></div>
+                </div>
+
+                <!-- Tab 3: Letter -->
+                <div id="tab-letter" class="tab-content">
+                    <div class="form-group">
+                        <label>ถึงใคร (To):</label>
+                        <input type="text" id="in-letter-to" placeholder="คนโปรดของเค้า">
+                    </div>
+                    <div class="form-group">
+                        <label>ข้อความในจดหมาย:</label>
+                        <textarea id="in-letter-msg" rows="6" placeholder="เขียนความในใจ..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-love" onclick="generateLink()">✨ สร้างลิงก์ ✨</button>
+            </div>
+
+            <div id="result-area" class="hidden" style="margin-top: 15px;">
+                <p>ส่งลิงก์นี้ให้เขาได้เลย!</p>
+                <div class="link-box">
+                    <input type="text" id="share-link" readonly>
+                    <button onclick="copyLink()">Copy</button>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สร้างการ์ดวาเลนไทน์ 💌</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css?v=3">
+    <style>
+        :root {
+            --primary: #d81b60;
+            --secondary: #fce4ec;
+            --text: #4a2c2c;
+            --border: #e0e0e0;
+            --bg-page: #fff0f5;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #fff0f5 0%, #fce4ec 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(216, 27, 96, 0.08);
+            /* Softer shadow */
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            background: #f5f5f5;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transform: translateX(-2px);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin: 0 0 10px;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .page-header p {
+            color: #7d5a5a;
+            font-size: 1.05rem;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        /* Tabs */
+        .modal-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 35px;
+            background: #fff;
+            padding: 5px;
+            border-radius: 50px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95rem;
+            color: #999;
+            cursor: pointer;
+            padding: 10px 24px;
+            border-radius: 50px;
+            transition: all 0.25s ease;
+            font-weight: 600;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--secondary);
+            color: var(--primary);
+            box-shadow: 0 2px 5px rgba(216, 27, 96, 0.1);
+        }
+
+        /* Form Content */
+        .form-content {
+            padding: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            box-sizing: border-box;
+            background: #fafafa;
+            transition: all 0.2s ease;
+            color: var(--text);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(216, 27, 96, 0.06);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 6px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* Timeline Items */
+        .timeline-editor-item {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        h4 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h4::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #f0f0f0;
+        }
+
+        /* Buttons */
+        .modal-footer {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-love {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.25);
+            transition: all 0.3s ease;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-love:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(216, 27, 96, 0.35);
+            background: #ad1457;
+        }
+
+        /* Result Area */
+        #result-area {
+            background: #fff;
+            border: 2px dashed #f8bbd0;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: none;
+        }
+
+        .link-box {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            background: #fff;
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        .link-box input {
+            background: #f9f9f9;
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .link-box button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .link-box button:hover {
+            background: #000;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 20px;
+            }
+
+            .link-box {
+                flex-direction: column;
+            }
+
+            .link-box button {
+                width: 100%;
+            }
+
+            .modal-tabs {
+                width: 100%;
+                justify-content: space-between;
+                gap: 5px;
+            }
+
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- New Top Bar with Back Button -->
+        <div class="top-bar">
+            <a href="index.html" class="back-btn">
+                <span>←</span> กลับไปที่การ์ด
+            </a>
+            <!-- Optional: Logo or small branding could go here -->
+        </div>
+
+        <div class="page-header">
+            <h1>ออกแบบเว็บไซต์ของคุณ 🛠️</h1>
+            <p>ปรับแต่งข้อความและรูปภาพตามใจชอบ แล้วส่งลิงก์ให้คนพิเศษได้เลย!</p>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="modal-tabs">
+            <button class="tab-btn active" onclick="switchTab('tab-hero')">หน้าแรก</button>
+            <button class="tab-btn" onclick="switchTab('tab-timeline')">เรื่องราว</button>
+            <button class="tab-btn" onclick="switchTab('tab-letter')">จดหมาย</button>
+            <button class="tab-btn" onclick="switchTab('tab-surprise')">เซอร์ไพรส์</button>
+        </div>
+
+        <div class="form-content">
+            <!-- Tab 1: Hero -->
+            <div id="tab-hero" class="tab-content active">
+                <div class="form-group">
+                    <label>หัวข้อใหญ่ (Title):</label>
+                    <input type="text" id="in-hero-h1" placeholder="สุขสันต์วันวาเลนไทน์">
+                    <small>ข้อความใหญ่ที่สุดบนหน้าเว็บ</small>
+                </div>
+                <div class="form-group">
+                    <label>คำโปรย (Subtitle):</label>
+                    <input type="text" id="in-hero-sub" placeholder="แด่...คนพิเศษของเค้า ❤️">
+                    <small>ข้อความเล็กๆ ใต้หัวข้อ</small>
+                </div>
+            </div>
+
+            <!-- Tab 2: Timeline -->
+            <div id="tab-timeline" class="tab-content">
+                <div class="timeline-editor-item">
+                    <h4>เหตุการณ์ที่ 1</h4>
+                    <div class="form-group">
+                        <label>วันที่:</label>
+                        <input type="text" id="in-t1-date" placeholder="14 ก.พ. 2023">
+                    </div>
+                    <div class="form-group">
+                        <label>รูปภาพ (Link/URL):</label>
+                        <input type="text" id="in-t1-img" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>หัวข้อ:</label>
+                        <input type="text" id="in-t1-title" placeholder="เดทแรกของเรา 💖">
+                    </div>
+                    <div class="form-group">
+                        <label>คำบรรยาย:</label>
+                        <textarea id="in-t1-desc" rows="2"></textarea>
+                    </div>
+                </div>
+                <!-- hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;" -->
+
+                <div class="timeline-editor-item">
+                    <h4>เหตุการณ์ที่ 2</h4>
+                    <div class="form-group"><input type="text" id="in-t2-date" placeholder="วันที่..."></div>
+                    <div class="form-group"><input type="text" id="in-t2-img" placeholder="ลิงก์รูปภาพ..."></div>
+                    <div class="form-group"><input type="text" id="in-t2-title" placeholder="หัวข้อ..."></div>
+                    <div class="form-group"><textarea id="in-t2-desc" rows="2"></textarea></div>
+                </div>
+
+                <div class="timeline-editor-item">
+                    <h4>เหตุการณ์ที่ 3</h4>
+                    <div class="form-group"><input type="text" id="in-t3-date" placeholder="วันที่..."></div>
+                    <div class="form-group"><input type="text" id="in-t3-img" placeholder="ลิงก์รูปภาพ..."></div>
+                    <div class="form-group"><input type="text" id="in-t3-title" placeholder="หัวข้อ..."></div>
+                    <div class="form-group"><textarea id="in-t3-desc" rows="2"></textarea></div>
+                </div>
+            </div>
+
+            <div id="tab-letter" class="tab-content">
+                <div class="form-group">
+                    <label>ถึงใคร (To):</label>
+                    <input type="text" id="in-letter-to" placeholder="คนโปรดของเค้า">
+                </div>
+                <div class="form-group">
+                    <label>ข้อความในจดหมาย:</label>
+                    <textarea id="in-letter-msg" rows="6" placeholder="เขียนความในใจ..."></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 4: Surprise -->
+            <div id="tab-surprise" class="tab-content">
+                <div class="form-group">
+                    <label>รูปภาพ/GIF ตอนขอ (Link):</label>
+                    <input type="text" id="in-surp-img" placeholder="https://.../giphy.gif">
+                    <small>รูปน้องหมี หรือรูปคู่ก็ได้</small>
+                </div>
+                <div class="form-group">
+                    <label>ข้อความตอนขอ:</label>
+                    <input type="text" id="in-surp-text" placeholder="เป็นวาเลนไทน์ของเค้านะ? 🥺">
+                </div>
+                <div class="form-group">
+                    <label>ปุ่มตกลง (Yes):</label>
+                    <input type="text" id="in-btn-yes" placeholder="ตกลง! 💖">
+                </div>
+                <div class="form-group">
+                    <label>ปุ่มปฎิเสธ (No):</label>
+                    <input type="text" id="in-btn-no" placeholder="ไม่เอา 😢">
+                </div>
+                <!-- hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;" -->
+                <h4>ตอนตอบตกลง ❤️</h4>
+                <div class="form-group">
+                    <label>รูปภาพตอนดีใจ (Link):</label>
+                    <input type="text" id="in-suc-img" placeholder="https://.../happy-cat.gif">
+                </div>
+                <div class="form-group">
+                    <label>คำพูดแสดงความดีใจ:</label>
+                    <input type="text" id="in-suc-title" placeholder="เย้! รักตะเองที่สุดเลย! ❤️">
+                </div>
+                <div class="form-group">
+                    <label>ข้อความปิดท้าย:</label>
+                    <input type="text" id="in-suc-text" placeholder="อยู่ด้วยกันไปนานๆ นะคะ 🥰">
+                </div>
+            </div>
+            <!-- Advanced Options -->
+            <div style="margin-top: 20px; text-align: center;">
+                <label style="display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;">
+                    <input type="checkbox" id="in-hide-btn">
+                    <span style="font-weight: bold; color: var(--text);">ซ่อนปุ่ม "เขียนการ์ดเอง" ในหน้าเว็บ
+                        (ไม่ให้เขากดแก้) 🔒</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="modal-footer" style="margin-top: 30px; text-align: center;">
+            <button class="btn-love" onclick="generateLink()">✨ สร้างลิงก์ ✨</button>
+        </div>
+
+        <div id="result-area" class="hidden"
+            style="margin-top: 25px; padding: 20px; background: #fff5f8; border-radius: 10px; border: 1px dashed var(--primary);">
+            <p style="text-align: center; font-weight: bold; color: var(--primary);">เสร็จแล้ว!
+                คัดลอกลิงก์นี้ส่งให้เขาได้เลย 👇</p>
+            <div class="link-box">
+                <input type="text" id="share-link" readonly onclick="this.select()">
+                <button onclick="copyLink()">Copy</button>
+            </div>
+            <p style="text-align: center; margin-top: 10px; font-size: 0.9em;">
+                <a href="#" id="preview-link" target="_blank" style="color: var(--text-light);">ลองกดเพื่อดูตัวอย่าง</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="create.js"></script>
+</body>
+
+</html>
