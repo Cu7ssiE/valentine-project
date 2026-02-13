@@ -20,71 +20,71 @@ function switchTab(tabId) {
 
 // 1. Generate Link (Full Version)
 function generateLink() {
-    // Determine the base URL for the CARD (index.html)
-    // If we are on create.html, we assume index.html is in the same directory.
     const baseUrl = window.location.origin + window.location.pathname.replace('create.html', 'index.html');
 
-    // Fallback if pathname doesn't end in create.html (e.g. just folder root)
-    // but mostly likely it will be explicit.
-
-    const p = new URLSearchParams();
-
-    // Helper to get value
+    // Collect all data into an object
+    const data = {};
     const getVal = (id) => {
         const el = document.getElementById(id);
         return el ? el.value.trim() : '';
     };
-    const add = (key, val) => { if (val) p.set(key, val); };
 
     // Hero
-    add('hT', getVal('in-hero-h1'));
-    add('hS', getVal('in-hero-sub'));
+    data.hT = getVal('in-hero-h1');
+    data.hS = getVal('in-hero-sub');
 
     // Timeline 1
-    add('t1d', getVal('in-t1-date'));
-    add('t1i', getVal('in-t1-img'));
-    add('t1t', getVal('in-t1-title'));
-    add('t1desc', getVal('in-t1-desc'));
+    data.t1d = getVal('in-t1-date');
+    data.t1i = getVal('in-t1-img');
+    data.t1t = getVal('in-t1-title');
+    data.t1desc = getVal('in-t1-desc');
 
     // Timeline 2
-    add('t2d', getVal('in-t2-date'));
-    add('t2i', getVal('in-t2-img'));
-    add('t2t', getVal('in-t2-title'));
-    add('t2desc', getVal('in-t2-desc'));
+    data.t2d = getVal('in-t2-date');
+    data.t2i = getVal('in-t2-img');
+    data.t2t = getVal('in-t2-title');
+    data.t2desc = getVal('in-t2-desc');
 
     // Timeline 3
-    add('t3d', getVal('in-t3-date'));
-    add('t3i', getVal('in-t3-img'));
-    add('t3t', getVal('in-t3-title'));
-    add('t3desc', getVal('in-t3-desc'));
+    data.t3d = getVal('in-t3-date');
+    data.t3i = getVal('in-t3-img');
+    data.t3t = getVal('in-t3-title');
+    data.t3desc = getVal('in-t3-desc');
 
     // Letter
-    add('to', getVal('in-letter-to'));
-    add('msg', getVal('in-letter-msg'));
+    data.to = getVal('in-letter-to');
+    data.msg = getVal('in-letter-msg');
 
     // Surprise
-    add('sImg', getVal('in-surp-img'));
-    add('sText', getVal('in-surp-text'));
-    add('sYes', getVal('in-btn-yes'));
-    add('sNo', getVal('in-btn-no'));
+    data.sImg = getVal('in-surp-img');
+    data.sText = getVal('in-surp-text');
+    data.sYes = getVal('in-btn-yes');
+    data.sNo = getVal('in-btn-no');
 
     // Success
-    add('sucImg', getVal('in-suc-img'));
-    add('sucTitle', getVal('in-suc-title'));
-    add('sucText', getVal('in-suc-text'));
+    data.sucImg = getVal('in-suc-img');
+    data.sucTitle = getVal('in-suc-title');
+    data.sucText = getVal('in-suc-text');
 
     // Options
     const hideBtn = document.getElementById('in-hide-btn');
     if (hideBtn && hideBtn.checked) {
-        p.set('hide', '1');
+        data.hide = '1';
     }
 
-    if (Array.from(p).length === 0) {
+    // Clean empty keys to save space
+    Object.keys(data).forEach(key => (data[key] === '' || data[key] === null) && delete data[key]);
+
+    if (Object.keys(data).length === 0) {
         alert("ยังไม่ได้แก้ไขอะไรเลยนะ! 😅");
         return;
     }
 
-    const finalUrl = `${baseUrl}?${p.toString()}`;
+    // Compress
+    const jsonString = JSON.stringify(data);
+    const compressed = LZString.compressToEncodedURIComponent(jsonString);
+
+    const finalUrl = `${baseUrl}?data=${compressed}`;
 
     // Show Result
     const linkInput = document.getElementById('share-link');
@@ -120,10 +120,26 @@ function copyLink() {
 // 3. Load Params to Inputs (Pre-fill)
 function loadParamsToInputs() {
     const p = new URLSearchParams(window.location.search);
+    let data = {};
+
+    // Decompress if 'data' param exists
+    if (p.get('data')) {
+        try {
+            if (typeof LZString !== 'undefined') {
+                const decompressed = LZString.decompressFromEncodedURIComponent(p.get('data'));
+                if (decompressed) data = JSON.parse(decompressed);
+            }
+        } catch (e) {
+            console.error("Decompression failed:", e);
+        }
+    }
+
+    const getParam = (key) => data[key] || p.get(key);
 
     const setVal = (id, key) => {
         const el = document.getElementById(id);
-        if (el && p.get(key)) el.value = p.get(key);
+        const val = getParam(key);
+        if (el && val) el.value = val;
     };
 
     // Hero
@@ -165,7 +181,7 @@ function loadParamsToInputs() {
 
     // Options
     const hideBtn = document.getElementById('in-hide-btn');
-    if (hideBtn && p.get('hide') === '1') {
+    if (hideBtn && getParam('hide') === '1') {
         hideBtn.checked = true;
     }
 }

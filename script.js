@@ -259,21 +259,41 @@ function switchTab(tabId) {
 // 1. Check URL Params on Load (Full Version)
 function checkUrlParams() {
     const p = new URLSearchParams(window.location.search);
+    let data = {};
+
+    // Decompress if 'data' param exists
+    if (p.get('data')) {
+        try {
+            // Check if LZString is available (it should be)
+            if (typeof LZString !== 'undefined') {
+                const decompressed = LZString.decompressFromEncodedURIComponent(p.get('data'));
+                if (decompressed) data = JSON.parse(decompressed);
+            }
+        } catch (e) {
+            console.error("Decompression failed:", e);
+        }
+    }
+
+    // Unified getter: Check compressed data first, then normal URL params
+    const getParam = (key) => data[key] || p.get(key);
 
     // Helper to set text
     const setText = (id, key) => {
         const el = document.getElementById(id);
-        if (el && p.get(key)) el.innerText = p.get(key);
+        const val = getParam(key);
+        if (el && val) el.innerText = val;
     };
     // Helper to set image src
     const setImg = (id, key) => {
         const el = document.getElementById(id);
-        if (el && p.get(key)) el.src = p.get(key);
+        const val = getParam(key);
+        if (el && val) el.src = val;
     };
     // Helper for HTML (newlines)
     const setHtml = (id, key) => {
         const el = document.getElementById(id);
-        if (el && p.get(key)) el.innerHTML = p.get(key).replace(/\n/g, '<br>');
+        const val = getParam(key);
+        if (el && val) el.innerHTML = val.replace(/\n/g, '<br>');
     };
 
     // Hero
@@ -299,12 +319,12 @@ function checkUrlParams() {
     setText('t3-desc', 't3desc');
 
     // Letter
-    if (p.get('to')) {
+    if (getParam('to')) {
         const header = document.getElementById('letter-header');
-        if (header) header.innerText = `ถึง... ${p.get('to')} 💖`;
+        if (header) header.innerText = `ถึง... ${getParam('to')} 💖`;
 
         const instr = document.querySelector('.instruction');
-        if (instr) instr.innerText = `มีข้อความถึงคุณ ${p.get('to')} 💌`;
+        if (instr) instr.innerText = `มีข้อความถึงคุณ ${getParam('to')} 💌`;
     }
 
     setHtml('letter-body', 'msg');
@@ -321,7 +341,7 @@ function checkUrlParams() {
     setText('success-text', 'sucText');
 
     // Check for 'hide' param
-    if (p.get('hide') === '1') {
+    if (getParam('hide') === '1') {
         const createBtn = document.querySelector('.floating-create-btn');
         if (createBtn) createBtn.style.display = 'none';
     }
