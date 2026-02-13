@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="style.css?v=3">
     <!-- Compression Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
             --primary: #d81b60;
@@ -566,12 +568,34 @@
             <p style="text-align: center; font-weight: bold; color: var(--primary);">เสร็จแล้ว!
                 คัดลอกลิงก์นี้ส่งให้เขาได้เลย 👇</p>
             <div class="link-box">
-                <input type="text" id="share-link" readonly onclick="this.select()">
+                <input type="text" id="share-link" placeholder="ลิงก์จะขึ้นตรงนี้ (หรือวางลิงก์ย่อเพื่อทำ QR)"
+                    onclick="this.select()">
                 <button onclick="copyLink()">Copy</button>
+                <button onclick="shortenLink()"
+                    style="background: #fff; color: #333; border: 1px solid #ddd; margin-left: 5px;"
+                    title="สร้างลิงก์สั้น (TinyURL)">🔗 ย่อลิงก์</button>
+            </div>
+            <div id="url-length-display"
+                style="text-align: right; font-size: 0.8rem; color: #888; margin-top: 5px; margin-right: 5px;">
+                ความยาวลิงก์: <span id="char-count">0</span> ตัวอักษร
+                <span id="qr-status" style="margin-left: 8px; font-weight: bold;"></span>
             </div>
             <p style="text-align: center; margin-top: 10px; font-size: 0.9em;">
-                <a href="#" id="preview-link" target="_blank" style="color: var(--text-light);">ลองกดเพื่อดูตัวอย่าง</a>
+                <a href="#" id="preview-link" target="_blank"
+                    style="color: var(--text-light); text-decoration: underline;">ลองกดเพื่อดูตัวอย่าง</a>
             </p>
+
+            <!-- QR Code Section -->
+            <div style="text-align: center; margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px;">
+                <button onclick="generateQRCode()" class="btn-secondary"
+                    style="background: #fff; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 20px; cursor: pointer; margin-bottom: 15px;">
+                    📱 สร้าง QR Code
+                </button>
+                <div id="qrcode-container" style="display: flex; justify-content: center; margin-top: 10px;"></div>
+                <p id="qr-warning" style="display: none; color: #d32f2f; font-size: 0.85rem; margin-top: 10px;">
+                    ⚠️ ข้อมูลเยอะเกินไปสำหรับ QR Code! (ลองเปลี่ยนจาก "อัพโหลดรูป" เป็น "ใส่ลิงก์รูป" แทนนะ)
+                </p>
+            </div>
         </div>
     </div>
 

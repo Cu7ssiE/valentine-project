@@ -91,6 +91,23 @@ function generateLink() {
     const linkInput = document.getElementById('share-link');
     if (linkInput) linkInput.value = finalUrl;
 
+    // Update Length Display
+    const charCount = document.getElementById('char-count');
+    const qrStatus = document.getElementById('qr-status');
+    const len = finalUrl.length;
+
+    if (charCount) charCount.innerText = len.toLocaleString();
+
+    if (qrStatus) {
+        if (len <= 2500) {
+            qrStatus.innerText = "✅ สร้าง QR ได้";
+            qrStatus.style.color = "#2e7d32"; // Green
+        } else {
+            qrStatus.innerText = "⚠️ ยาวเกินสำหรับ QR";
+            qrStatus.style.color = "#d32f2f"; // Red
+        }
+    }
+
     const previewLink = document.getElementById('preview-link');
     if (previewLink) previewLink.href = finalUrl;
 
@@ -115,6 +132,24 @@ function copyLink() {
         console.error('Failed to copy: ', err);
         alert("คัดลอกไม่ติด ลองกดคัดลอกเองนะ 😅");
     });
+}
+
+// 2.1 Shorten Link (TinyURL)
+function shortenLink() {
+    const linkInput = document.getElementById('share-link');
+    const url = linkInput.value;
+
+    if (!url) {
+        alert("กรุณากด 'สร้างลิงก์' ก่อนนะ! 😅");
+        return;
+    }
+
+    // Open TinyURL creation page in new tab
+    const tinyUrlCreate = `https://tinyurl.com/create.php?url=${encodeURIComponent(url)}`;
+    window.open(tinyUrlCreate, '_blank');
+
+    // Guide the user
+    alert("ระบบกำลังเปิดหน้าเว็บ TinyURL ให้ครับ...\n\n1. กดสร้างลิงก์ย่อในเว็บนั้น\n2. 'คัดลอก' ลิงก์ย่อที่ได้\n3. นำมา 'วาง' แทนที่ในช่องลิงก์ของหน้านี้\n4. กดปุ่ม 'QR Code' ได้เลย! 📱✨");
 }
 
 
@@ -202,7 +237,7 @@ function setupImageUploads() {
                 let height = img.height;
 
                 // Optimized dimensions for URL safety (smaller)
-                const MAX_SIZE = 300;
+                const MAX_SIZE = 180;
 
                 if (width > height) {
                     if (width > MAX_SIZE) {
@@ -221,8 +256,8 @@ function setupImageUploads() {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // Compress to JPEG with 0.6 quality (more aggressive)
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                // Compress to JPEG with 0.5 quality (more aggressive)
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.5);
                 callback(dataUrl);
             };
             img.src = e.target.result;
@@ -251,3 +286,42 @@ function setupImageUploads() {
 }
 
 setupImageUploads();
+
+// --- QR Code Logic ---
+function generateQRCode() {
+    const linkInput = document.getElementById('share-link');
+    const container = document.getElementById('qrcode-container');
+    const warning = document.getElementById('qr-warning');
+    const url = linkInput.value;
+
+    if (!url) {
+        alert("กรุณากด 'สร้างลิงก์' ก่อนนะ! 😅");
+        return;
+    }
+
+    // Clear previous
+    container.innerHTML = "";
+    warning.style.display = 'none';
+
+    // Check Length (Strict limit < 2500 for QR at Level L)
+    if (url.length > 2500) {
+        warning.style.display = 'block';
+        alert(`ข้อมูลยาวเกินไป (${url.length} ตัวอักษร) สำหรับสร้าง QR Code ครับ! 😢\n(ขออภัยครับ พยายามย่อให้ไม่เกิน 2500 แล้ว แต่รูปภาพอาจจะยังใหญ่อยู่ แนะนำให้ใช้ 'ลิงก์รูป' แทนการอัพโหลดจะดีที่สุดครับ)`);
+        return;
+    }
+
+    try {
+        new QRCode(container, {
+            text: url,
+            width: 180,
+            height: 180,
+            colorDark: "#d81b60",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.L // Low correction = More capacity
+        });
+    } catch (e) {
+        console.warn("QR Error:", e);
+        // Fallback for very edge cases
+        container.innerHTML = "สร้าง QR ไม่ได้ (ข้อมูลยาวเกินไป)";
+    }
+}
