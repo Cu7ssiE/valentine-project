@@ -13,16 +13,51 @@
         rel="stylesheet">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="envelope.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css?v=2">
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 
-<body class="page-fade-in">
+<body style="overflow: hidden;">
+
+    <!-- Envelope Overlay (Initial Screen) -->
+    <div id="envelope-overlay">
+        <div id="heart-transition"></div>
+        <div class="hearts-bg"></div>
+
+        <div class="env-container">
+            <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+                <div class="envelope">
+                    <div class="back"></div>
+                    <div class="letter">
+                        <div class="letter-content">
+                            <h3>ถึง...คนโปรดของเค้า 💖</h3>
+                            <p>
+                                ขอบคุณที่เข้ามาเป็นความสดใส<br>
+                                ในทุกๆ วันของเค้านะคะ<br>
+                                <br>
+                                ขอให้เราได้เติบโตไปด้วยกัน<br>
+                                แบบนี้ไปนานๆ เลยนะ... <br>
+                                <strong>"รักตะเองที่สุดเลย!" 🐻🐱</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Paper Texture Overlay (Moved inside letter in CSS/Structure if needed, but keeping global for now or removing if unused) -->
+
+                    <div class="pocket"></div>
+                    <div class="flap"></div>
+                    <div class="seal">
+                        <span class="seal-heart">❤</span>
+                    </div>
+                </div>
+            </div>
+            <div class="instruction">แตะเพื่อเปิดจดหมาย 💌</div>
+        </div>
+    </div>
 
     <!-- Background Animation Container -->
-    <div class="hearts-bg"></div>
+
 
     <!-- Hero Section -->
     <div class="hero">
@@ -45,7 +80,7 @@
             <div class="glass-card timeline-content">
                 <span class="date-badge">14 ก.พ. 2023</span>
                 <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1517867065872-c70f385eecc8?auto=format&fit=crop&q=80&w=400&h=300"
+                    <img src="https://www.phoenixmag.com/wp-content/uploads/2019/08/AdobeStock_167368849-1280x853.jpeg"
                         alt="First Date">
                 </div>
                 <h3>เดทแรกของเรา 💖</h3>
@@ -82,19 +117,43 @@
     </div>
 
     <!-- Surprise Section -->
-    <div class="surprise-section">
-        <div class="glass-card surprise-card">
-            <h2>เป็นวาเลนไทน์ของเค้านะ? 🌹</h2>
-            <p>เค้ามีคำถามจะถาม...</p>
-
-            <div class="buttons-container">
-                <button class="btn-love" id="btn-yes" onclick="showLove()">ตกลง! 💖</button>
-                <button class="btn-no" id="btn-no" onmouseover="runAway(this)">ไม่เอา 😢</button>
+    <!-- Surprise Section (Redesigned) -->
+    <div class="surprise-section" id="surprise-section">
+        <div class="surprise-wrapper">
+            <!-- 1. The Gift Box -->
+            <div class="gift-box-container" id="gift-box" onclick="openGift()">
+                <div class="gift-box">
+                    <div class="lid">
+                        <div class="bow"></div>
+                    </div>
+                    <div class="box"></div>
+                </div>
+                <p class="click-hint">Click me! 🎁</p>
             </div>
 
-            <div id="secretMsg" class="hidden-msg">
-                <h2>เย้! รักตะเองที่สุดเลยยย! 💖</h2>
-                <p>(ขอบคุณที่เป็นวาเลนไทน์ของเค้านะครับ 🥰)</p>
+            <!-- 2. The Surprise Content (Hidden) -->
+            <div class="surprise-content hidden" id="surprise-content">
+                <div class="cute-character">
+                    <!-- Milk & Mocha Bear GIF -->
+                    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExanY4ZDMwejk3MWN5NGNtcmtxczZtd3ZrOWVzdnowbjQ5cGVjdnBtNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kZqbBT64ECtjy/giphy.gif"
+                        alt="Cute Bear">
+                </div>
+                <h2>เป็นวาเลนไทน์ของเค้านะ? 🥺</h2>
+                <div class="action-buttons">
+                    <!-- Added btn-yes class for JS selection -->
+                    <button class="btn-love btn-yes" id="btn-yes" onclick="acceptLove()">ตกลง! 💖</button>
+                    <!-- Removed onmouseover="moveButton()" -->
+                    <button class="btn-no" id="btn-no" onclick="handleNoClick()">ไม่เอา 😢</button>
+                </div>
+            </div>
+
+            <!-- 3. Success Message (Hidden) -->
+            <div class="success-message hidden" id="success-msg">
+                <!-- Mochi Cat GIF -->
+                <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDRyN3V5eWd3OXpycnU1MjFyajU0c2pxbW10b3FkNHhqcW43ZmFwayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4asRlBKdJaPeBahjcL/giphy.gif"
+                    alt="Happy Cat">
+                <h2>เย้! รักตะเองที่สุดเลย! ❤️</h2>
+                <p>อยู่ด้วยกันไปนานๆ นะคะ 🥰</p>
             </div>
         </div>
     </div>

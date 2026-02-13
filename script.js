@@ -27,81 +27,214 @@ const observer = new IntersectionObserver((entries) => {
             entry.target.classList.add('show');
         }
     });
-}, { threshold: 0.15 }); // Slightly higher threshold for better effect
+}, { threshold: 0.15 });
 
 // Observe timeline items for the scroll animation
 const scrollElements = document.querySelectorAll('.timeline-item');
 scrollElements.forEach((el) => observer.observe(el));
 
-// 3. Surprise Button Effect
-// 3. Surprise Button Effect
-function showLove() {
-    const msg = document.getElementById('secretMsg');
-    const btnYes = document.getElementById('btn-yes');
-    const btnNo = document.getElementById('btn-no');
+// 3. New Surprise Section Logic
+function openGift() {
+    const giftBox = document.getElementById('gift-box');
+    const surpriseContent = document.getElementById('surprise-content');
 
-    // Show message with animation
-    msg.style.display = 'block';
+    // Animate Box Opening
+    giftBox.classList.add('open');
 
-    // Hide buttons smoothly
-    btnYes.style.display = 'none';
-    btnNo.style.display = 'none';
+    // Trigger Confetti Pop
+    triggerConfetti();
 
-    // Confetti removed from here as requested
+    // Show Content after short delay
+    setTimeout(() => {
+        giftBox.style.display = 'none';
+        surpriseContent.classList.remove('hidden');
+    }, 600);
 }
 
-// 4. Runaway "No" Button
-function runAway(btn) {
-    // Generate random position within the card or viewport
-    // Using simple transform to avoid layout shifts
-    const x = (Math.random() - 0.5) * 300; // Move up to 150px horizontally
-    const y = (Math.random() - 0.5) * 300; // Move up to 150px vertically
+function acceptLove() {
+    const surpriseContent = document.getElementById('surprise-content');
+    const successMsg = document.getElementById('success-msg');
 
-    btn.style.transform = `translate(${x}px, ${y}px)`;
-    btn.style.transition = 'all 0.2s ease-out';
+    surpriseContent.classList.add('hidden');
+    successMsg.classList.remove('hidden');
+
+    // Big Celebration
+    triggerConfetti();
+    setInterval(triggerConfetti, 2000); // More rain!
+}
+
+// "No" Button Evasion Logic
+// "No" Button Logic
+function handleNoClick() {
+    const btnNo = document.getElementById('btn-no');
+    const btnYes = document.querySelector('.btn-yes');
+
+    // 1. Change Text (Cuter & Funnier)
+    const phrases = [
+        "อย่ากดเลยนะ... 🥺",
+        "คิดดีๆ อีกทีนะ! 💕",
+        "เค้าเสียใจนะ... 😭",
+        "ให้โอกาสเค้าเถอะ!",
+        "งื้อออ ไม่เอาหน่า...",
+        "ใจร้ายที่สุดเลย! 💔",
+        "นะนะนะ ตกลงเถอะ! 🙏",
+        "ถ้าไม่กด จะร้องไห้แล้วนะ 😿"
+    ];
+
+    // Pick a random phrase
+    const randomIndex = Math.floor(Math.random() * phrases.length);
+    btnNo.innerText = phrases[randomIndex];
+
+    // 2. Make Yes Button Bigger
+    let currentSize = parseFloat(window.getComputedStyle(btnYes).fontSize);
+    let newSize = currentSize * 1.4; // Grow by 40% each time
+
+    // Limit max size to prevent breaking layout completely
+    if (newSize < 300) {
+        btnYes.style.fontSize = `${newSize}px`;
+        // Also increase padding slightly for balance
+        let currentPadding = parseFloat(window.getComputedStyle(btnYes).paddingTop);
+        btnYes.style.padding = `${currentPadding * 1.2}px ${currentPadding * 1.5}px`;
+    } else {
+        // If it gets too big, fill the screen (Joke)
+        btnYes.style.width = "100%";
+        btnYes.style.height = "100%";
+        btnYes.style.fontSize = "5rem";
+        btnYes.innerText = "ตกลงได้แล้ว! ❤️";
+    }
+
+    // 3. Shrink No Button (New Feature)
+    let currentNoSize = parseFloat(window.getComputedStyle(btnNo).fontSize);
+    let newNoSize = currentNoSize * 0.85; // Shrink by 15% each time
+
+    // Prevent it from disappearing completely (keep at least 8px)
+    if (newNoSize > 8) {
+        btnNo.style.fontSize = `${newNoSize}px`;
+
+        // Also decrease padding
+        let currentNoPadding = parseFloat(window.getComputedStyle(btnNo).paddingTop);
+        btnNo.style.padding = `${currentNoPadding * 0.85}px ${currentNoPadding * 1.2}px`;
+    } else {
+        // Make it almost invisible or unclickable eventually
+        btnNo.style.opacity = '0.5';
+        btnNo.style.pointerEvents = 'none';
+        btnNo.innerText = "หายไปแย้ว...";
+    }
 }
 
 function triggerConfetti() {
-    // Check if canvas-confetti is loaded
     if (typeof confetti === 'function') {
-        const colors = ['#c0392b', '#e1b12c', '#ffffff', '#d980fa']; // Deep Red, Gold, White, Purple
+        const colors = ['#ff4081', '#ffffff', '#ffeb3b'];
 
-        // First burst
         confetti({
             particleCount: 100,
             spread: 70,
             origin: { y: 0.6 },
             colors: colors
         });
-
-        // Continuous Fireworks
-        var duration = 3 * 1000;
-        var end = Date.now() + duration;
-
-        (function frame() {
-            confetti({
-                particleCount: 5,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: colors
-            });
-            confetti({
-                particleCount: 5,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: colors
-            });
-
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
-        }());
-    } else {
-        console.log('Confetti library not loaded');
     }
 }
 
-// Trigger Confetti immediately on load
-triggerConfetti();
+// --- Envelope Logic (Existing) ---
+const envelopeWrapper = document.getElementById('envelope');
+const instruction = document.querySelector('.instruction');
+const overlay = document.getElementById('envelope-overlay');
+let isOpen = false;
+let isTransitioning = false;
+
+// Tilt Logic
+document.addEventListener('mousemove', (e) => {
+    // Only tilt if overlay is visible
+    if (overlay.style.display === 'none') return;
+    if (isOpen) return;
+
+    const x = e.clientX;
+    const y = e.clientY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const xRotate = ((y / height) - 0.5) * -20;
+    const yRotate = ((x / width) - 0.5) * 20;
+
+    if (envelopeWrapper) {
+        envelopeWrapper.style.transform = `rotateX(${xRotate}deg) rotateY(${yRotate}deg)`;
+    }
+});
+
+document.addEventListener('mouseleave', () => {
+    if (isOpen) return;
+    if (envelopeWrapper) {
+        envelopeWrapper.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    }
+});
+
+// Open & Transition Logic
+// Open & Transition Logic
+let step = 0; // 0: Closed, 1: Seal Removed, 2: Open, 3: Transitioning
+
+window.openEnvelope = function () {
+    if (isTransitioning) return;
+
+    // STEP 1: REMOVE SEAL
+    if (step === 0) {
+        step = 1;
+        const seal = document.querySelector('.seal');
+        const instruction = document.querySelector('.instruction');
+
+        // Add class to animate seal removal
+        seal.classList.add('removed');
+
+        // Update instruction
+        if (instruction) {
+            instruction.innerText = "แตะอีกครั้งเพื่อเปิดซอง... 📩";
+        }
+        return;
+    }
+
+    // STEP 2: OPEN ENVELOPE
+    if (step === 1) {
+        step = 2;
+        isOpen = true; // For tilt logic
+
+        // Stop float animation
+        envelopeWrapper.style.animation = 'none';
+        envelopeWrapper.style.transform = 'rotateX(0deg) rotateY(0deg)';
+
+        // Add open class (Triggers Flap & Letter Rise via CSS)
+        envelopeWrapper.classList.add('open');
+
+        // Update instruction
+        if (instruction) {
+            instruction.style.opacity = '0';
+            setTimeout(() => {
+                instruction.innerText = "แตะอีกครั้งเพื่อไปต่อ... ❤️";
+                instruction.style.opacity = '1';
+            }, 1500); // Wait for letter to rise
+        }
+        return;
+    }
+
+    // STEP 3: TRANSITION
+    if (step === 2) {
+        step = 3;
+        isTransitioning = true;
+        if (instruction) instruction.style.opacity = '0';
+
+        // Transition Animation
+        const heart = document.getElementById('heart-transition');
+        heart.style.transform = 'translate(-50%, -50%) scale(50)';
+
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            overlay.style.visibility = 'hidden';
+            window.scrollTo(0, 0);
+            document.body.style.overflow = 'auto';
+        }, 1000);
+    }
+}
+
+// Force scroll to top
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);

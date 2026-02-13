@@ -17,16 +17,18 @@
     --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.8);
     --glass-shadow: 0 10px 30px 0 rgba(216, 27, 96, 0.15);
-    /* Pink tinted shadow */
-    --card-radius: 24px;
+
+    /* Unified Background Variables */
+    --bg-gradient-start: #fff0f5;
+    --bg-gradient-end: #fce4ec;
 }
 
 body {
     font-family: 'Lato', sans-serif;
     margin: 0;
     padding: 0;
-    /* Soft Muted Pink Gradient */
-    background: linear-gradient(135deg, #fff0f5 0%, #f8bbd0 100%);
+    /* Unified Radial Gradient matching Overlay */
+    background: radial-gradient(circle at center, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
     background-attachment: fixed;
     color: var(--text);
     overflow-x: hidden;
@@ -321,83 +323,245 @@ body {
     }
 }
 
-/* Surprise Section */
+/* Surprise Section (Redesigned) */
 .surprise-section {
-    min-height: 80vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 50px 20px;
     position: relative;
+    background: transparent;
+    overflow: hidden;
 }
 
-.surprise-card {
-    text-align: center;
-    max-width: 500px;
+.surprise-wrapper {
+    position: relative;
     width: 100%;
+    max-width: 600px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.surprise-card h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    color: var(--text);
-}
-
-.surprise-card p {
-    font-size: 1.2rem;
-    color: var(--text-light);
-    margin-bottom: 40px;
-}
-
-.btn-love {
-    background: linear-gradient(135deg, #d81b60, #ff80ab);
-    /* Rose to Pink */
-    color: white;
-    border: none;
-    padding: 16px 40px;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    border-radius: 50px;
+/* --- CSS Gift Box --- */
+.gift-box-container {
+    position: relative;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(216, 27, 96, 0.4);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.3s ease;
+    animation: floatingBox 3s ease-in-out infinite;
+}
+
+.gift-box-container:hover {
+    transform: scale(1.05);
+}
+
+.gift-box {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.box {
+    width: 150px;
+    height: 120px;
+    background: #ff527b;
+    /* Vivid Pink */
+    position: absolute;
+    bottom: 0;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.box::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 100%;
+    background: #ff8fa3;
+    /* Ribbon color */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.lid {
+    width: 170px;
+    height: 40px;
+    background: #ff4069;
+    /* Slightly Darker Pink for Lid */
+    position: absolute;
+    top: 20px;
+    left: -10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    transition: transform 0.5s ease;
+}
+
+.lid::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 100%;
+    background: #ff8fa3;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bow {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #ff8fa3;
+    border-radius: 50%;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bow::before,
+.bow::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 40px;
+    border: 5px solid #ff8fa3;
+    border-radius: 50%;
+    top: 0;
+}
+
+.bow::before {
+    left: -35px;
+    clip-path: inset(0 0 50% 0);
+    /* Half circle */
+    transform: rotate(30deg);
+}
+
+.bow::after {
+    right: -35px;
+    clip-path: inset(0 0 50% 0);
+    transform: rotate(-30deg);
+}
+
+.click-hint {
+    text-align: center;
+    margin-top: 150px;
+    /* Push below box */
+    font-family: 'Lato', sans-serif;
+    color: #d81b60;
+    font-weight: 700;
+    font-size: 1.2rem;
+    animation: fadeIn 1s infinite alternate;
+}
+
+/* --- Animations --- */
+@keyframes floatingBox {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Open State */
+.gift-box-container.open .lid {
+    transform: translateY(-80px) rotate(-10deg);
+    opacity: 0;
+}
+
+.gift-box-container.open .box {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.5s ease;
+}
+
+.gift-box-container.open .click-hint {
+    display: none;
+}
+
+/* --- Surprise Content (Modal) --- */
+.surprise-content,
+.success-message {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(216, 27, 96, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid #fff;
+    max-width: 90%;
+    width: 400px;
+    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.cute-character img {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.surprise-content h2,
+.success-message h2 {
+    font-family: 'Playfair Display', serif;
+    color: #d81b60;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-yes,
+.btn-no {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 50px;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.btn-love:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(216, 27, 96, 0.5);
+.btn-yes {
+    background: linear-gradient(45deg, #ff4081, #f50057);
+    color: white;
+    box-shadow: 0 5px 15px rgba(245, 0, 87, 0.4);
 }
 
-.btn-love:active {
-    transform: scale(0.98);
+.btn-yes:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(245, 0, 87, 0.6);
 }
 
-.hidden-msg {
-    display: none;
-    margin-top: 40px;
-    padding: 30px;
-    /* Clean white background for message */
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+.btn-no {
+    background: #fce4ec;
+    color: #880e4f;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-.hidden-msg h2 {
-    color: var(--primary);
-    font-size: 1.8rem;
-    margin: 0 0 15px;
+/* Success Message */
+.success-message img {
+    width: 180px;
+    margin-bottom: 20px;
 }
 
-.hidden-msg p {
-    font-size: 1.1rem;
-    font-style: italic;
+.success-message p {
+    font-family: 'Lato', sans-serif;
     color: #555;
-    margin: 0;
+    font-size: 1.1rem;
 }
 
 /* Animations */
@@ -481,4 +645,407 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* --- Envelope Overlay (From separate page) --- */
+#envelope-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Lighter background to let pink envelope pop */
+    background: radial-gradient(circle at center, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    perspective: 1500px;
+    z-index: 9999;
+    /* Top most */
+    overflow: hidden;
+    transition: opacity 1s ease-out, visibility 1s;
+}
+
+/* ... (skipping unchanged lines) ... */
+
+/* --- Responsive Design (Mobile & Tablet) --- */
+
+/* Tablet (iPad) & Large Phones */
+@media screen and (max-width: 1024px) {
+    .hero h1 {
+        font-size: 4rem;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* Mobile Devices */
+@media screen and (max-width: 768px) {
+
+    /* Overlay Scaling */
+    .envelope-wrapper {
+        transform: scale(0.85);
+        /* Shrink envelope for mobile */
+    }
+
+    /* Typography Clamping */
+    .hero h1 {
+        font-size: clamp(3rem, 10vw, 4rem);
+    }
+
+    .hero .subtitle {
+        font-size: 1.1rem;
+    }
+
+    /* Timeline Adjustments */
+    .timeline::before {
+        left: 20px;
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding-left: 50px;
+        padding-right: 10px;
+    }
+
+    .timeline-item.right {
+        left: 0;
+    }
+
+    .timeline-item::after {
+        left: 11px;
+    }
+
+    .timeline-item.right::after {
+        left: 11px;
+    }
+
+    /* Surprise Section */
+    .question-container h2 {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+    }
+
+    .btn-love,
+    .btn-no {
+        padding: 12px 30px;
+        /* Smaller buttons */
+        font-size: 1rem;
+    }
+}
+
+/* Tiny Phones */
+@media screen and (max-width: 400px) {
+    .envelope-wrapper {
+        transform: scale(0.7);
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* --- Envelope & Letter Enhanced --- */
+.env-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    /* Move down slightly as requested */
+    margin-top: 50px;
+}
+
+.instruction {
+    font-family: 'Lato', sans-serif;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    opacity: 0.8;
+    animation: fadeIn 2s infinite alternate;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 5px 15px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+}
+
+.envelope-wrapper {
+    position: relative;
+    width: 420px;
+    height: 280px;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    animation: float 4s ease-in-out infinite;
+}
+
+.envelope-wrapper:hover {
+    transform: scale(1.02);
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #FF8FA3;
+    /* Unified Pale Pink: Soft and Gentle */
+    background: #ffd1dc;
+    border-radius: 5px;
+    /* Soft 3D Shadow for the whole envelope */
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.05),
+        0 10px 15px rgba(0, 0, 0, 0.1),
+        inset 0 0 20px rgba(0, 0, 0, 0.02);
+    /* Slight inner depth */
+    /* Border removed as requested */
+}
+
+/* Updated Flap */
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Slightly Darker Flap: Distinct but harmonious */
+    background: linear-gradient(135deg, #ff9eb5 0%, #ff8fa3 100%);
+    /* Top highlight for 3D edge */
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    /* Extended tip to 65% */
+    clip-path: polygon(0 0, 50% 65%, 100% 0);
+    transform-origin: top;
+
+    /* Delay z-index change so it stays on top while opening */
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s 0.4s;
+    z-index: 5;
+    /* Removed backface-visibility: hidden so we see it when it flips up */
+    /* backface-visibility: hidden; */
+
+    /* Stronger shadow for 3D Lift */
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+}
+
+/* Flap Border Fix (Optional if filter works well) */
+/* Kept empty or minimal if filter handles it */
+
+
+/* Pocket (Front) */
+.pocket {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Pocket: Matches Body (Pale Pink) exactly */
+    background: #ffd1dc;
+
+    /* Pocket shape */
+    clip-path: polygon(0 100%, 100% 100%, 100% 40%, 50% 65%, 0 40%);
+    z-index: 4;
+
+    /* Inner shadow to simulate opening depth */
+    box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.05);
+    /* Drop shadow for layer separation */
+    filter: drop-shadow(0 -2px 4px rgba(0, 0, 0, 0.08));
+}
+
+/* Seal */
+.seal {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    width: 60px;
+    height: 60px;
+    /* Gold-ish Rim or just nicely colored */
+    background: radial-gradient(circle at 30% 30%, #ec407a, #c2185b);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    border: 2px solid #e91e63;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+.seal:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.seal-heart {
+    color: #fce4ec;
+    font-size: 24px;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+/* Seal Removed Animation */
+.seal.removed {
+    transform: translate(-50%, -50%) scale(1.5);
+    /* Pop up */
+    opacity: 0;
+    /* Fade out */
+    pointer-events: none;
+}
+
+/* Open State Animations */
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+    /* Move behind letter */
+}
+
+.envelope-wrapper.open .seal {
+    opacity: 0;
+    transform: translate(-50%, -80px) scale(0);
+    pointer-events: none;
+}
+
+/* --- Enhanced Letter --- */
+.letter {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 90%;
+    background: #FFFDF5;
+    /* Cream paper */
+    z-index: 3;
+    border-radius: 5px;
+    transition: all 1s ease-in-out;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+    /* Shadow for depth inside */
+    border: 1px solid #ddd;
+    /* Paper Lift Shadow */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+    /* Paper Texture */
+    background-image:
+        linear-gradient(#eee .1rem, transparent .1rem);
+    background-size: 100% 1.5rem;
+
+    /* Initial Position: Completely hidden inside */
+    bottom: 0px;
+    transform: translateX(-50%) scale(0.9);
+    opacity: 0;
+}
+
+.letter-content {
+    opacity: 0;
+    /* Hidden until opened */
+    transition: opacity 0.5s ease 0.8s;
+    /* Longer delay */
+    text-align: center;
+    position: relative;
+    top: 10px;
+    /* Adjust text position */
+}
+
+.letter h3 {
+    font-family: 'Dancing Script', cursive;
+    color: #C2185B;
+    margin: 5px 0 15px;
+    font-size: 1.6rem;
+}
+
+.letter p {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    color: #5D4037;
+    line-height: 1.8;
+}
+
+/* Letter Rise Animation (Just Right Reveal - Scaled 1.1) */
+.envelope-wrapper.open .letter {
+    /* Slide out such that it is fully readable but anchored */
+    bottom: 60px;
+    /* Scale down slightly from 1.3 -> 1.1 to fit screen */
+    transform: translateX(-50%) translateY(-20px) scale(1.1);
+    opacity: 1;
+    z-index: 6;
+    /* On top of everything */
+    height: auto;
+    /* Reduce min-height slightly */
+    min-height: 300px;
+    /* Ensure content fits */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition-delay: 0.4s;
+    margin-bottom: 0;
+}
+
+.envelope-wrapper.open .letter-content {
+    opacity: 1;
+    transition-delay: 1s;
+}
+
+
+/* Fly Away Animation (for Redirect/Clean up) */
+.envelope-wrapper.fly-away {
+    animation: flyUp 1.5s ease-in-out forwards !important;
+}
+
+@keyframes flyUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100vh) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* Instruction Text */
+.instruction {
+    margin-top: 60px;
+    color: rgba(233, 30, 99, 0.6);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    animation: pulse 2s infinite;
+    font-family: 'Lato', sans-serif;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* --- Heart Zoom Transition (Z-Index fix) --- */
+#heart-transition {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 100px;
+    height: 100px;
+    background-color: #fce4ec;
+    /* Matches overlay bg */
+    border-radius: 50%;
+    background: radial-gradient(circle, #fce4ec 30%, #f8bbd0 100%);
+    z-index: 10000;
+    /* Higher than overlay */
+    pointer-events: none;
+    transition: transform 1.5s cubic-bezier(0.7, 0, 0.3, 1);
 }
