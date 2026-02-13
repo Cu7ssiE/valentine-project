@@ -246,6 +246,64 @@
             box-shadow: none;
         }
 
+        /* Upload Button Style */
+        .upload-group {
+            display: flex;
+            align-items: center;
+            /* Center vertically, don't stretch */
+            gap: 12px;
+            /* Give them space */
+            background: transparent;
+            border: none;
+            overflow: visible;
+        }
+
+        .upload-group input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 1px solid #eee;
+            border-radius: 12px !important;
+            /* Restore border radius */
+            background: #fafafa;
+            box-shadow: none;
+            transition: all 0.2s;
+        }
+
+        .upload-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(216, 27, 96, 0.05);
+        }
+
+        .btn-upload {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 50px;
+            /* Pill shape */
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #555;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            margin: 0;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .btn-upload:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(216, 27, 96, 0.2);
+        }
+
         .link-box {
             display: flex;
             gap: 12px;
@@ -377,7 +435,14 @@
                     </div>
                     <div class="form-group">
                         <label>รูปภาพ (Link/URL):</label>
-                        <input type="text" id="in-t1-img" placeholder="https://example.com/image.jpg">
+                        <div class="upload-group">
+                            <input type="text" id="in-t1-img" placeholder="https://example.com/image.jpg">
+                            <label class="btn-upload">
+                                📂 อัพรูป
+                                <input type="file" accept="image/*" hidden
+                                    onchange="handleFileUpload(this, 'in-t1-img')">
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>หัวข้อ:</label>
@@ -393,7 +458,16 @@
                 <div class="timeline-editor-item">
                     <h4>เหตุการณ์ที่ 2</h4>
                     <div class="form-group"><input type="text" id="in-t2-date" placeholder="วันที่..."></div>
-                    <div class="form-group"><input type="text" id="in-t2-img" placeholder="ลิงก์รูปภาพ..."></div>
+                    <div class="form-group">
+                        <div class="upload-group">
+                            <input type="text" id="in-t2-img" placeholder="ลิงก์รูปภาพ...">
+                            <label class="btn-upload">
+                                📂อัพรูป
+                                <input type="file" accept="image/*" hidden
+                                    onchange="handleFileUpload(this, 'in-t2-img')">
+                            </label>
+                        </div>
+                    </div>
                     <div class="form-group"><input type="text" id="in-t2-title" placeholder="หัวข้อ..."></div>
                     <div class="form-group"><textarea id="in-t2-desc" rows="2"></textarea></div>
                 </div>
@@ -401,7 +475,16 @@
                 <div class="timeline-editor-item">
                     <h4>เหตุการณ์ที่ 3</h4>
                     <div class="form-group"><input type="text" id="in-t3-date" placeholder="วันที่..."></div>
-                    <div class="form-group"><input type="text" id="in-t3-img" placeholder="ลิงก์รูปภาพ..."></div>
+                    <div class="form-group">
+                        <div class="upload-group">
+                            <input type="text" id="in-t3-img" placeholder="ลิงก์รูปภาพ...">
+                            <label class="btn-upload">
+                                📂อัพรูป
+                                <input type="file" accept="image/*" hidden
+                                    onchange="handleFileUpload(this, 'in-t3-img')">
+                            </label>
+                        </div>
+                    </div>
                     <div class="form-group"><input type="text" id="in-t3-title" placeholder="หัวข้อ..."></div>
                     <div class="form-group"><textarea id="in-t3-desc" rows="2"></textarea></div>
                 </div>
@@ -422,7 +505,13 @@
             <div id="tab-surprise" class="tab-content">
                 <div class="form-group">
                     <label>รูปภาพ/GIF ตอนขอ (Link):</label>
-                    <input type="text" id="in-surp-img" placeholder="https://.../giphy.gif">
+                    <div class="upload-group">
+                        <input type="text" id="in-surp-img" placeholder="https://.../giphy.gif">
+                        <label class="btn-upload">
+                            📂 อัพรูป
+                            <input type="file" accept="image/*" hidden onchange="handleFileUpload(this, 'in-surp-img')">
+                        </label>
+                    </div>
                     <small>รูปน้องหมี หรือรูปคู่ก็ได้</small>
                 </div>
                 <div class="form-group">
@@ -441,7 +530,13 @@
                 <h4>ตอนตอบตกลง ❤️</h4>
                 <div class="form-group">
                     <label>รูปภาพตอนดีใจ (Link):</label>
-                    <input type="text" id="in-suc-img" placeholder="https://.../happy-cat.gif">
+                    <div class="upload-group">
+                        <input type="text" id="in-suc-img" placeholder="https://.../happy-cat.gif">
+                        <label class="btn-upload">
+                            📂 อัพรูป
+                            <input type="file" accept="image/*" hidden onchange="handleFileUpload(this, 'in-suc-img')">
+                        </label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>คำพูดแสดงความดีใจ:</label>

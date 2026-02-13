@@ -188,3 +188,65 @@ function loadParamsToInputs() {
 
 // Run on load
 loadParamsToInputs();
+
+// --- Image Upload Logic (Client-Side Resize & Base64) ---
+function setupImageUploads() {
+    const processImage = (file, callback) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                // Max dimensions (keep it small for URL safety)
+                const MAX_SIZE = 500;
+
+                if (width > height) {
+                    if (width > MAX_SIZE) {
+                        height *= MAX_SIZE / width;
+                        width = MAX_SIZE;
+                    }
+                } else {
+                    if (height > MAX_SIZE) {
+                        width *= MAX_SIZE / height;
+                        height = MAX_SIZE;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Compress to JPEG with 0.7 quality
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                callback(dataUrl);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    // Attach listeners to all file inputs (we'll add these next)
+    window.handleFileUpload = (input, targetTextId) => {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const targetInput = document.getElementById(targetTextId);
+
+            // Show loading state
+            const originalPlaceholder = targetInput.placeholder;
+            targetInput.value = "กำลังประมวลผลรูป... ⏳";
+            targetInput.disabled = true;
+
+            processImage(file, (base64) => {
+                targetInput.value = base64;
+                targetInput.disabled = false;
+                alert("อัพโหลดรูปเรียบร้อย! 📸 (รูปถูกย่อขนาดเพื่อใส่ในลิงก์)");
+            });
+        }
+    };
+}
+
+setupImageUploads();
